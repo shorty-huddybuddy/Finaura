@@ -1,0 +1,10 @@
+apscheduler
+fastapi
+pandas
+tensorflow
+yfinance
+scikit-learn
+firebase-admin
+pydantic
+gnews
+uvicorn
