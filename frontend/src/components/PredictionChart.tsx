@@ -131,7 +131,7 @@ const PredictionChart: React.FC<PredictionChartProps> = ({ ticker }) => {
             tooltip: {
               callbacks: {
                 label: function (context) {
-                  return `Price: $${context.parsed.y.toFixed(2)}`;
+                  return `Price: $${context.parsed.y?.toFixed(2) ?? 'N/A'}`;
                 },
               },
             },
