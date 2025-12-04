@@ -31,20 +31,20 @@ var (
 
 func InitFirebase() {
 	opt := option.WithCredentialsFile("api_key.json")
-	
+
 	// Get Firebase config from api_key.json
 	// For project finapp-455b1, the database URL should be:
 	// https://finapp-455b1-default-rtdb.firebaseio.com
 	config := &firebase.Config{
 		DatabaseURL: os.Getenv("FIREBASE_DB_URL"),
 	}
-	
+
 	// If FIREBASE_DB_URL not set, use default from project ID
 	if config.DatabaseURL == "" {
 		config.DatabaseURL = "https://finapp-455b1-default-rtdb.firebaseio.com"
 		log.Printf("Using default Firebase Realtime Database URL: %s", config.DatabaseURL)
 	}
-	
+
 	app, err := firebase.NewApp(context.Background(), config, opt)
 	if err != nil {
 		log.Fatalf("Error initializing Firebase app: %v", err)
