@@ -36,10 +36,10 @@ func GenerateResponse(req RequestBody) (string, error) {
 	}
 
 	// Fill prompt template with user's data
-	prompt := strings.ReplaceAll(string(promptBytes), "{balance}", fmt.Sprintf("%.2f", userPortfolio.Balance))
+	prompt := strings.ReplaceAll(string(promptBytes), "{balance}", fmt.Sprintf("%d", userPortfolio.Balance))
 	prompt = strings.ReplaceAll(prompt, "{experience}", userPortfolio.Experience)
 	prompt = strings.ReplaceAll(prompt, "{preference}", userPortfolio.Preference)
-	prompt = strings.ReplaceAll(prompt, "{liquidity}", fmt.Sprintf("%.2f", userPortfolio.Liquidity))
+	prompt = strings.ReplaceAll(prompt, "{liquidity}", userPortfolio.Liquidity)
 	prompt = strings.ReplaceAll(prompt, "{risk_bearing}", userPortfolio.RiskBearing)
 	prompt = strings.ReplaceAll(prompt, "{minimum_freezing_period}", fmt.Sprintf("%d", userPortfolio.MinimumFreezingPeriod))
 

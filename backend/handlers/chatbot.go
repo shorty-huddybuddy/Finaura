@@ -18,7 +18,11 @@ func ChatbotHandler(c *fiber.Ctx) error {
 	qtype := c.Query("type")
 	if qtype == "investment_planner" {
 		var req chatbot.RequestBody
-		c.BodyParser(&req)
+		if err := c.BodyParser(&req); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Invalid request body: " + err.Error(),
+			})
+		}
 		response, err := chatbot.GenerateResponse(req)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
