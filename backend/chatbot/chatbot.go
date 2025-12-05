@@ -5,17 +5,18 @@ import (
 	"backend/portfolio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
 type RequestBody struct {
-	Balance               int     `json:"balance"`
-	Experience            string  `json:"experience"`
-	Preference            string  `json:"preference"`
+	Balance               int    `json:"balance"`
+	Experience            string `json:"experience"`
+	Preference            string `json:"preference"`
 	Liquidity             string `json:"liquidity"`
-	RiskBearing           string  `json:"risk_bearing"`
-	MinimumFreezingPeriod int     `json:"minimum_freezing_period"`
-	QueryType             string  `json:"query_type"`
+	RiskBearing           string `json:"risk_bearing"`
+	MinimumFreezingPeriod int    `json:"minimum_freezing_period"`
+	QueryType             string `json:"query_type"`
 }
 
 func GenerateResponse(req RequestBody) (string, error) {
@@ -30,9 +31,10 @@ func GenerateResponse(req RequestBody) (string, error) {
 	}
 
 	// Load prompt template
-	promptBytes, err := os.ReadFile("prompt.txt")
+	promptPath := getPromptPath("prompt.txt")
+	promptBytes, err := os.ReadFile(promptPath)
 	if err != nil {
-		return "", fmt.Errorf("failed to load prompt template: %v", err)
+		return "", fmt.Errorf("failed to load prompt template from %s: %v", promptPath, err)
 	}
 
 	// Fill prompt template with user's data
@@ -47,19 +49,46 @@ func GenerateResponse(req RequestBody) (string, error) {
 	return gemini.QueryGemini(prompt)
 }
 
-func Analyze_Portfolio(req map[string]interface{}) (string,error) {
-	
-	prompt, err := os.ReadFile("analyze_prompt.txt")
+func Analyze_Portfolio(req map[string]interface{}) (string, error) {
+
+	promptPath := getPromptPath("analyze_prompt.txt")
+	prompt, err := os.ReadFile(promptPath)
 	if err != nil {
-		return "", fmt.Errorf("failed to load prompt template: %v", err)
+		return "", fmt.Errorf("failed to load prompt template from %s: %v", promptPath, err)
 	}
 	fmt.Println(req)
 	prompt = append(prompt, []byte(fmt.Sprintf("%+v", req))...)
 
-	response,err :=  gemini.QueryGemini(string(prompt))
+	response, err := gemini.QueryGemini(string(prompt))
 	fmt.Println(response)
 
-	return response,err
+	return response, err
 
+}
 
+// getPromptPath searches for prompt files in multiple possible locations
+func getPromptPath(filename string) string {
+	// Try current directory first
+	if _, err := os.Stat(filename); err == nil {
+		return filename
+	}
+
+	// Try backend directory (for when running from project root)
+	backendPath := filepath.Join("backend", filename)
+	if _, err := os.Stat(backendPath); err == nil {
+		return backendPath
+	}
+
+	// Try absolute path from executable location
+	execPath, err := os.Executable()
+	if err == nil {
+		execDir := filepath.Dir(execPath)
+		absPath := filepath.Join(execDir, filename)
+		if _, err := os.Stat(absPath); err == nil {
+			return absPath
+		}
+	}
+
+	// Return original filename as fallback (will trigger error in caller)
+	return filename
 }
