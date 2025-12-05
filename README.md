@@ -2,6 +2,11 @@
 
 Finaura is an AI-powered financial assistant that simplifies investment planning, portfolio management, and financial education. It empowers users with real-time insights, personalized suggestions, and smart financial tools — all in one seamless platform.
 
+## 🌐 Live Demo
+
+**Frontend**: [https://finaura-kohl.vercel.app/](https://finaura-kohl.vercel.app/)  
+**Backend API**: [https://finaura-backend-xfvz.onrender.com](https://finaura-backend-xfvz.onrender.com)
+
 ---
 
 ## 🚩 Problem Statement
@@ -65,9 +70,9 @@ In today’s dynamic financial landscape, individuals often face:
 
 ---
 
-## 📽️ Demo
+## 📽️ Demo Video
 
-Watch the 3-minute product demo: https://www.youtube.com/watch?v=E2v8UEyJjDU
+Watch the 3-minute product demo: [https://www.youtube.com/watch?v=E2v8UEyJjDU](https://www.youtube.com/watch?v=E2v8UEyJjDU)
 
 ---
 
